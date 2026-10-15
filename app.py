@@ -123,7 +123,7 @@ if "messages" not in st.session_state:
 with st.sidebar:
     st.markdown("### 🪸 Control Center")
     uploaded_file = st.file_uploader(
-        "Upload Dataset (.csv)", type=["csv"], help="Maximum 200MB"
+        "Upload Dataset (.csv, .xlsx)", type=["csv", "xlsx", "xls"], help="Maximum 200MB"
     )
 
     st.markdown("---")
@@ -171,7 +171,11 @@ st.markdown(
 
 # 6. Main Workflow
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
+    # Detect file type and load accordingly
+    if uploaded_file.name.endswith('.csv'):
+        df = pd.read_csv(uploaded_file)
+    else:
+        df = pd.read_excel(uploaded_file)
 
     # Metric Row
     c1, c2, c3, c4 = st.columns(4)
